@@ -21,6 +21,7 @@
 
 		if(faces.length != 0)
 		{
+			/* loop through faces array to capture multiple faces */
 			var mesh = faces[0].scaledMesh;
 
 			console.log(mesh);
@@ -39,6 +40,7 @@
 				var [x, y, z] = mesh[i];
 
 				/* scale co-ordinates to fit in canvas */
+				/* not required if canvas and input video stream are of same size */
 
 				x = (x * canvas.width) / 640;
 				y = (y * canvas.height) / 480;
@@ -75,7 +77,7 @@
 		                        get_facemesh();
                 		        count += 1;
                 		}
-
+				/* warning: using while(1) infinite loop may hang the program - hence need the counter */
 			});
                 }
 	</script>
