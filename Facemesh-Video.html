@@ -9,9 +9,10 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
         <script>
-		/* to use web-assembly as backend, set backend to 'wasm' */
+		/* to use web-assembly as backend, change the backend to 'wasm' */
                 tf.setBackend('webgl').then(console.log('Backend set to', tf.getBackend()));
         </script>
+
 	<script>
 
 	async function get_facemesh()
@@ -34,7 +35,7 @@
 
 			var draw = canvas.getContext("2d");
 
-			/* fill canvas with black background */
+			/* fill canvas with current frame */
 			draw.fillStyle = "black";
 			draw.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -48,8 +49,8 @@
 				/* scale co-ordinates to fit in canvas */
 				/* not required if canvas and input video stream are of same size */
 
-				x = (x * canvas.width) / 640;
-				y = (y * canvas.height) / 480;
+				x = (x * canvas.width) / 1280;
+				y = (y * canvas.height) / 720;
 
 				draw.fillRect(Math.round(x), Math.round(y), 2, 2);
 			}
@@ -58,35 +59,24 @@
 		{
 			console.log(`no faces detected..`);
 		}
+
 	}
 	</script>
 </head>
 
 <body>
 
-	<video width=640 height=480 autoplay> </video>
+	<video width=640 height=480 autoplay loop>
+		<source src="jim-carrey-slow.mp4" type="video/mp4">
+	</video>
 	<canvas width=640 height=480 id="plot"> </canvas>
 
-	<br>
 	<script>
-		/* capture video stream from webcam */
-		var video = document.querySelector("video");
-                if(navigator.mediaDevices.getUserMedia)
-                {
-                        navigator.mediaDevices.getUserMedia({video: true})
-                                .then(function (stream) {video.srcObject = stream;
-
-				/* loop to create facemesh */
-				var count = 1;
-				const iter = 250;
-		                while(count < iter)
-                		{
-		                        get_facemesh();
-                		        count += 1;
-                		}
-				/* warning: using while(1) infinite loop may hang the program - hence need the counter */
-			});
-                }
+		stream = document.querySelector("video");
+		for(i=0; i<250; i++)
+		{
+			get_facemesh();
+		}
 	</script>
 </body>
 
