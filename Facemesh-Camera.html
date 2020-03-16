@@ -77,12 +77,10 @@
                                 .then(function (stream) {video.srcObject = stream;
 
 				/* loop to create facemesh */
-				var count = 1;
 				const iter = 250;
-		                while(count < iter)
+				for(i=0; i < iter; i++)
                 		{
 		                        get_facemesh();
-                		        count += 1;
                 		}
 				/* warning: using while(1) infinite loop may hang the program - hence need the counter */
 			});

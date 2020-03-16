@@ -73,10 +73,15 @@
 
 	<script>
 		stream = document.querySelector("video");
-		for(i=0; i<250; i++)
+
+		/* loop to create facemesh */
+		const iter = 250;
+		for(i=0; i < iter; i++)
 		{
 			get_facemesh();
 		}
+		/* warning: using while(1) infinite loop may hang the program - hence need the counter */
+
 	</script>
 </body>
 
