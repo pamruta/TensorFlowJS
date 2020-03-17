@@ -12,14 +12,15 @@
 		/* to use web-assembly as backend, set backend to 'wasm' */
                 tf.setBackend('webgl').then(console.log('Backend set to', tf.getBackend()));
         </script>
+
 	<script>
 
 	async function get_facemesh()
 	{
-		var canvas = document.getElementById("plot");
+		var canvas = document.getElementById("facemesh");
 
 		/* get video stream */
-		const stream = document.querySelector("video");
+		const stream = document.getElementById("movie");
 
 		/* running facemesh code */
 		const model = await facemesh.load(maxFaces=1);
@@ -58,33 +59,50 @@
 		{
 			console.log(`no faces detected..`);
 		}
+
+		// loop to process the next frame
+		setTimeout(get_facemesh, 1000/30);
 	}
 	</script>
 </head>
 
 <body>
 
-	<video width=640 height=480 autoplay> </video>
-	<canvas width=640 height=480 id="plot"> </canvas>
+	<video width=640 height=480 autoplay id="movie"> </video>
+	<canvas width=640 height=480 id="facemesh"> </canvas>
 
 	<br>
 	<script>
-		/* capture video stream from webcam */
-		var video = document.querySelector("video");
-                if(navigator.mediaDevices.getUserMedia)
-                {
-                        navigator.mediaDevices.getUserMedia({video: true})
-                                .then(function (stream) {video.srcObject = stream;
 
-				/* loop to create facemesh */
-				const iter = 250;
-				for(i=0; i < iter; i++)
-                		{
-		                        get_facemesh();
-                		}
-				/* warning: using while(1) infinite loop may hang the program - hence need the counter */
-			});
-                }
+		function live_webcam()
+		{
+			// capture live video stream from web camera
+			if(navigator.mediaDevices.getUserMedia)
+			{
+				navigator.mediaDevices.getUserMedia({video: true})
+					.then(function (stream) {video.srcObject = stream; });
+			}
+		}
+
+		function main()
+		{
+			// check if video is loaded and ready for processing
+			video = document.getElementById("movie");
+			if(video.readyState == 4)
+			{
+				console.log("video is ready for processing..");
+				get_facemesh();
+			}
+			else
+			{
+				console.log("nope, not loaded yet..");
+				setTimeout(main, 1000/30);
+			}
+		}
+
+		live_webcam();
+		main();
+
 	</script>
 </body>
 

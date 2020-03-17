@@ -10,16 +10,11 @@ Facemesh-Camera.html :	Real-time Face Tracking using TensorFlow.js
 			Install npm package dependencies as described here:
 			https://www.npmjs.com/package/@tensorflow-models/facemesh
 
-Facemesh-Video.html :   
+			To run using .mp4 video file, simply add 
+			<source src="VIDEO_PATH" type="video/mp4"> 
+			tag inside <video> </video> in HTML
 
-			The script is exactly same as Facemesh-Camera.html except
-			it takes .mp4 video as input instead of live camera stream.
-
-			Sample video file to try: jim-carrey-slow.mp4
-
-			The video is intentionally run in slow-motion to capture 
-			facial expressions clearly from each frame..
-
+			and comment out live_webcam() function call..
 
 Body-Segment.html   :
 
