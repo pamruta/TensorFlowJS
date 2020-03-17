@@ -1,0 +1,94 @@
+
+<html>
+
+	<head>
+
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
+
+	</head>
+
+	<body>
+		<video width=640 height=480 autoplay loop muted id="movie">
+		</video>
+		<canvas width=640 height=480 id="body_pix"> </canvas>
+
+		<script>
+
+			async function body_segment()
+			{
+				const frame = document.getElementById("movie");
+				const canvas = document.getElementById("body_pix");
+
+				const draw = canvas.getContext("2d");
+				draw.globalAlpha = 0.7;
+
+				// color codes for segments
+				const Color_Codes = ["#663399", "#663399", "#C71585", "#C71585", "#C71585", "#C71585", "#C71585", "#C71585", "#C71585", "#C71585", "#C71585", "#C71585", "#4682B4", "#4682B4", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080"];
+
+				// running body segmentation model
+				const model = await bodyPix.load();
+				const result = await model.segmentPersonParts(frame);
+				const pixels = result.data;
+
+				// colorizing pixels based on their segment ids
+				for(x=0; x < canvas.width; x++)
+				{
+					for(y=0; y < canvas.height; y++)
+					{
+						const xy = x * canvas.width + y;
+						var color_code = "";
+						if(pixels[xy] != -1)
+						{
+							// get color code of the segment
+							color_code = Color_Codes[pixels[xy]];
+						}
+						else
+						{
+							// set background to grey
+							color_code = "#C0C0C0";
+						}
+						draw.fillStyle = color_code;
+						draw.fillRect(y, x, 1, 1);
+					}
+				}
+
+				// loop to process the next frame
+				setTimeout(body_segment, 1000/30);
+			}
+
+		</script>
+
+		<script>
+		function live_webcam()
+		{
+			// capture live video stream from webcam
+			if(navigator.mediaDevices.getUserMedia)
+			{
+				navigator.mediaDevices.getUserMedia({video: true})
+					.then(function (stream) {video.srcObject = stream; });
+			}
+		}
+		function main()
+		{
+			// check if video is loaded
+                        video = document.getElementById("movie");
+			if(video.readyState == 4)
+			{
+				console.log("video is ready for processing..");
+				body_segment();
+			}
+			else
+			{
+				console.log("nope, not loaded yet..");
+				setTimeout(main, 1000/30);
+			}
+		}
+
+		live_webcam();
+		main();
+
+                </script>
+
+	</body>
+</html>

@@ -20,6 +20,18 @@ Facemesh-Video.html :
 			The video is intentionally run in slow-motion to capture 
 			facial expressions clearly from each frame..
 
+
+Body-Segment.html   :
+
+			Body Segmentation using TensorFlow.JS Body-Pix model
+
+			Takes live video stream from web camera, and runs
+			segmentation using Body-Pix model from TensorFlow.JS
+
+			Link to TensorFlow.JS Body-Pix model :
+
+			https://github.com/tensorflow/tfjs-models/tree/master/body-pix
+
 More scripts coming soon..
 
 
