@@ -9,7 +9,7 @@
 	</head>
 
 	<body>
-		<video width=640 height=480 autoplay loop muted id="movie">
+		<video width=640 height=480 autoplay muted id="movie">
 		</video>
 		<canvas width=640 height=480 id="body_pix"> </canvas>
 
@@ -62,7 +62,7 @@
 		<script>
 		function live_webcam()
 		{
-			// capture live video stream from webcam
+			// capture live video stream from web camera
 			if(navigator.mediaDevices.getUserMedia)
 			{
 				navigator.mediaDevices.getUserMedia({video: true})
@@ -71,7 +71,7 @@
 		}
 		function main()
 		{
-			// check if video is loaded
+			// check if the video is loaded and ready for processing
                         video = document.getElementById("movie");
 			if(video.readyState == 4)
 			{
@@ -80,10 +80,12 @@
 			}
 			else
 			{
-				console.log("nope, not loaded yet..");
+				console.log("nope, not ready yet..");
 				setTimeout(main, 1000/30);
 			}
 		}
+
+		// capture live stream and run segmentation once the video is ready for processing
 
 		live_webcam();
 		main();
