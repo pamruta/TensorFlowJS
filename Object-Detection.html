@@ -1,0 +1,105 @@
+
+<html>
+	<head>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"> </script>
+
+	</head>
+
+	<body>
+		<video width=640 height=480 autoplay muted loop playsinline id="movie">
+			<source src="horse-riding.mp4" type="video/mp4" />
+		</video>
+
+		<canvas width=640 height=480 id="frame">
+
+		<script>
+
+			// preparing the canvas object for drawing
+			const canvas = document.getElementById("frame");
+			var draw = canvas.getContext("2d");
+			draw.font = "20px Arial";
+			draw.lineWidth = 3;
+
+			// process video 
+			async function object_detection()
+			{
+
+				// load the coco-ssd model
+				const model = await cocoSsd.load();
+
+				while(1)
+				{
+
+					// get video stream
+					const stream = document.getElementById("movie");
+
+					// fill canvas object with video stream
+					draw.drawImage(stream, 0, 0, canvas.width, canvas.height);
+
+					// running object detection
+					const objects = await model.detect(canvas);
+
+					console.log(objects);
+
+					// mark each object on canvas
+					for(i=0; i < objects.length; i++)
+					{
+						// get bounding box and label
+						const box = objects[i].bbox;
+						const label = objects[i].class;
+
+						// mark objects of different types with different colors
+						var color_code = "yellow";
+						switch(label)
+						{
+							case "person" :
+									color_code = "#008B8B";
+									break;
+
+							case "horse" :
+									color_code = "#CD5C5C";
+									break;
+
+							case "car" :
+									color_code = "#9ACD32";
+									break;
+
+							// add more classes here as necessary
+						}
+
+						// draw on canvas
+
+						draw.fillStyle = color_code;
+						draw.strokeStyle = color_code;
+
+						draw.strokeRect(box[0], box[1], box[2], box[3]);
+						draw.fillText(label, box[0], box[1]-5);
+					}
+
+					// loop to process the next frame
+					await tf.nextFrame();
+				}
+
+			}
+
+			// check if the video is ready for processing
+			function main()
+			{
+				video = document.getElementById("movie");
+				if(video.readyState == 4)
+				{
+					console.log("video is ready for processing..");
+					object_detection();
+				}
+				else
+				{
+					console.log("nope, not ready yet..");
+					setTimeout(main, 1000/30);
+				}
+			}
+
+			main();
+		</script>
+	</body>
+</html>
