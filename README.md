@@ -30,6 +30,17 @@ Body-Segment.html   :
 
 			https://github.com/tensorflow/tfjs-models/tree/master/body-pix
 
+Video-Tagging.html  :
+
+			Identifies animal species in Wild-Life documentary films using
+			Mobile-Net Image Classification model in TensorFlow.JS
+
+			Link to TensorFlow.JS Mobile-Net model :
+
+			https://github.com/tensorflow/tfjs-models/tree/master/mobilenet
+
+			Sample video : wild-life.mp4
+
 More scripts coming soon..
 
 
