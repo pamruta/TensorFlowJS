@@ -41,6 +41,16 @@ Video-Tagging.html  :
 
 			Sample video : wild-life.mp4
 
+Object-Detection.html :
+
+			Marks Bounding Boxes around the Objects detected in the video using
+			TensorFlow.JS COCO-SSD model..
+
+			Link to TensorFlow.JS COCO-SSD model :
+
+			https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd
+
+
 More scripts coming soon..
 
 
