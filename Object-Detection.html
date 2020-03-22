@@ -50,22 +50,51 @@
 						const label = objects[i].class;
 
 						// mark objects of different types with different colors
-						var color_code = "yellow";
+						var color_code = "#FFFF00";
 						switch(label)
 						{
 							case "person" :
-									color_code = "#008B8B";
+									color_code = "#4682B4";
 									break;
 
 							case "horse" :
-									color_code = "#CD5C5C";
+									color_code = "#DB7093";
+									break;
+
+							case "cat" :
+									color_code = "#C71585";
+									break;
+
+							case "dog" :
+									color_code = "#BA55D3";
 									break;
 
 							case "car" :
+									color_code = "#008080";
+									break;
+
+							case "bus" :
 									color_code = "#9ACD32";
 									break;
 
+							case "truck" :
+									color_code = "#40E0D0";
+									break;
+
+							case "airplane" :
+									color_code = "#32CD32";
+									break;
+
+							case "boat" :
+									color_code = "#808000";
+									break;
+
+							case "train" :
+									color_code = "#228B22";
+									break;
+
 							// add more classes here as necessary
+
 						}
 
 						// draw on canvas
@@ -74,6 +103,8 @@
 						draw.strokeStyle = color_code;
 
 						draw.strokeRect(box[0], box[1], box[2], box[3]);
+						draw.fillRect(box[0], box[1]-30, 70, 30);
+						draw.fillStyle = "white";
 						draw.fillText(label, box[0], box[1]-5);
 					}
 
