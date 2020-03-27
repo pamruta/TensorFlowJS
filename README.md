@@ -51,7 +51,31 @@ Object-Detection.html :
 			https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd
 
 
-More scripts coming soon..
+Activity-Recognition.html :
+
+			Recognizes Sports Activities in the video using Transfer Learning 
+
+			Uses Pre-trained model Mobile-Net to extract features which are passed 
+			to the K-Nearest Neighbor Classifier for predictions
+
+			Link to KNN Classifier in TensorFlow.JS :
+
+			https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier
+
+			Activity Recognition can be performed in 3 simple steps:
+
+			1. Capture screenshot from video
+
+			2. Label few examples to train the classifier
+
+			3. Capture few test images and run prediction to recognize the activity
+
+			Presently, following sports activities are supported:
+
+			Swimming, Cycling, Boxing, Surfing, Figure Skating, Horse Riding
+
+			Simply load any video that contains the above activities in HTML, tag
+			few screenshots (~10-15 per class) and run predictions..
 
 
-Tech Stack: TensorFlow.JS, JavaScript, HTML5, WebGL, Web Assembly
+Tech Stack: TensorFlow.JS, JavaScript, HTML5, Mobile-Net, Knn-Classifier, Coco-SSD
