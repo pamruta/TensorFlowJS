@@ -11,10 +11,7 @@
 			// creating knn-classifier for activity recognition task
 			const knn = knnClassifier.create();
 
-			// saves number of training examples per class
-			var training_set = {"swimming": 0, "cycling": 0, "boxing": 0, "surfing": 0, "horse-riding": 0, "figure-skating": 0};
-
-			// capture screenshot from video stream and print on canvas
+			// capture screenshot from video stream and print it on canvas
 			function take_screenshot()
 			{
 				const stream = document.getElementById("movie");
@@ -31,39 +28,12 @@
 				// get image from HTML canvas object
 				const canvas = document.getElementById("screenshot");
 
-				// preparing canvas for further processing
-				const draw = canvas.getContext("2d");
-				draw.fillStyle = "yellow";
-				draw.font = "20px Arial";
-
 				// extract features from canvas image using Mobile-Net pre-trained model
 				const model = await mobilenet.load();
 				const features = model.infer(canvas, 'conv_preds');
 
-				var class_id = 0;
-				switch (label)
-				{
-					case "swimming" : class_id = 1; break;
-					case "cycling" : class_id = 2; break;
-					case "boxing" : class_id = 3; break;
-					case "surfing" : class_id = 4; break;
-					case "horse-riding" : class_id = 5; break;
-					case "figure-skating" : class_id = 6; break;
-					// add more classes here as necessary, e.g. cooking, reading, painting etc..
-				}
-
-				// print label on canvas
-				draw.fillText(label, 50, 100);
-
 				// add training example to knn-classsifier
-				knn.addExample(features, class_id);
-				training_set[label]++;
-
-				// print the number of labeled examples per class on javascript console
-				for (activity in training_set)
-				{
-					console.log(activity, training_set[activity]);
-				}
+				knn.addExample(features, label);
 
 				// resume video playback
 				const stream = document.getElementById("movie");
@@ -84,9 +54,6 @@
 				draw.fillStyle = "yellow";
 				draw.font = "20px Arial";
 
-				// activities to be recognized
-				const activities = ['None', 'Swimming', 'Cycling', 'Boxing', 'Surfing', 'Horse Riding', 'Figure Skating'];
-
 				// load mobile-net model for feature extraction
 				const model = await mobilenet.load();
 				while(1)
@@ -100,7 +67,7 @@
 					const result = await knn.predictClass(features);
 
 					// print predicted class-label on canvas
-					draw.fillText(activities[result.label], 50, 100);
+					draw.fillText(result.label, 50, 100);
 
 					// loop to process the next frame
 					await tf.nextFrame();
