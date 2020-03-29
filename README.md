@@ -53,10 +53,8 @@ Object-Detection.html :
 
 Activity-Recognition.html :
 
-			Recognizes Sports Activities in the video using Transfer Learning 
-
-			Uses Pre-trained model Mobile-Net to extract features which are passed 
-			to the K-Nearest Neighbor Classifier for predictions
+			Builds a KNN Classifier for Sports Activity Recognition using 
+			Transfer Learning on a pre-trained model Mobile-Net
 
 			Link to KNN Classifier in TensorFlow.JS :
 
@@ -64,18 +62,12 @@ Activity-Recognition.html :
 
 			Activity Recognition can be performed in 3 simple steps:
 
-			1. Capture screenshot from video
+			1. Compile training video which demonstrates various sports activities
+			that you want to capture automatically using Machine Learning
 
-			2. Label few examples to train the classifier
+			2. For each activity, capture few screenshots from the training video 
+			and tag them manually to train the knn-classifier
 
-			3. Capture few test images and run prediction to recognize the activity
-
-			Presently, following sports activities are supported:
-
-			Swimming, Cycling, Boxing, Surfing, Figure Skating, Horse Riding
-
-			Simply load any video that contains the above activities in HTML, tag
-			few screenshots (~10-15 per class) and run predictions..
-
+			3. Run predictions using the knn-classifier
 
 Tech Stack: TensorFlow.JS, JavaScript, HTML5, Mobile-Net, Knn-Classifier, Coco-SSD
