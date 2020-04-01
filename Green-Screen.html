@@ -13,7 +13,7 @@
 		</video>
 		<canvas width=640 height=480 id="green_screen"> </canvas>
 
-		<img crossorigin src="back-2.jpg" width=640 height=480 id="backdrop" style="visibility: hidden">
+		<img crossorigin src="back-1.jpg" width=640 height=480 id="backdrop" style="visibility: hidden">
 
 		<script>
 
@@ -75,7 +75,7 @@
 		function main()
 		{
 			// check if the video is ready for processing
-      video = document.getElementById("camera");
+			video = document.getElementById("camera");
 			if(video.readyState == 4)
 			{
 				console.log("video is ready for processing..");
