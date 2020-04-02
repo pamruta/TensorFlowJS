@@ -8,7 +8,6 @@
 
 			Real-time Face Tracking using TensorFlow.js
 
-
 			Takes live video stream from webcam and creates facemesh
 			(facial feature-map) by capturing 468 facial landmark points
 
