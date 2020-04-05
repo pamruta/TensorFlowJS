@@ -13,7 +13,7 @@
 		<video width=640 height=480 autoplay muted id="camera">
 		</video>
 
-		<canvas width=640 height=480 id="augmented_palm"> </canvas>
+		<canvas width=640 height=480 id="augmented_world"> </canvas>
 
 		<video autoplay muted loop id="movie" style="visibility: hidden">
 			<source src="frozen.mp4" type="video/mp4"> </source>
@@ -21,8 +21,8 @@
 
 		<script>
 
-			// tracks the position of the hand in live camera stream
-			// and plays video on palm
+			// tracks position of the hand in live camera stream
+			// and plays video as per hand gestures
 			async function capture_hand()
 			{
 				// load camera stream
@@ -33,21 +33,27 @@
 				movie.play();
 
 				// prepare canvas
-				const canvas = document.getElementById("augmented_palm");
+				const canvas = document.getElementById("augmented_world");
 				const draw = canvas.getContext("2d");
 
 				// load hand-pose model
 				const model = await handpose.load();
+
+				// default media position & size
+				var x = canvas.width - 230;
+				var y = 30;
+				var w = 200;
+				var h = 150;
 
 				while(1)
 				{
 					// fill canvas with camera frame
 					draw.drawImage(frame, 0, 0, width=640, height=480);
 
-					// running the hand-pose model
+					// track hand position
 					const result = await model.estimateHands(frame);
 
-					// check if hand is detected
+					// if hand is detected, update hand position
 					if(result.length > 0)
 					{
 						// get hand co-ordinates
@@ -65,14 +71,15 @@
 						const pinky_x = Math.round(pinky[0][0]);
 						const pinky_y = Math.round(pinky[0][1]);
 
-						// movie player is fit diagonally between the base of thumb & pinky
-						const x = Math.min(thumb_x, pinky_x);
-						const y = Math.min(thumb_y, pinky_y);
-						const w = Math.abs(thumb_x - pinky_x);
-						const h = Math.abs(thumb_y - pinky_y);
-
-						draw.drawImage(movie, x-20, y-20, w+20, h+20);
+						// update media position & size as per gestures
+						x = Math.min(thumb_x, pinky_x) - 20;
+						y = Math.min(thumb_y, pinky_y) - 20;
+						w = Math.abs(thumb_x - pinky_x) + 70;
+						h = Math.abs(thumb_y - pinky_y) + 70;
 					}
+
+					// play media at given location
+					draw.drawImage(movie, x, y, w, h);
 
 					// loop to process the next frame
 					await tf.nextFrame();
