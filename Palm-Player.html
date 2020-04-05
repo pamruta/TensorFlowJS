@@ -21,7 +21,7 @@
 
 		<script>
 
-			// captures the position of the hand in live camera stream
+			// tracks the position of the hand in live camera stream
 			// and plays video on palm
 			async function capture_hand()
 			{
@@ -65,7 +65,7 @@
 						const pinky_x = Math.round(pinky[0][0]);
 						const pinky_y = Math.round(pinky[0][1]);
 
-						// movie player is fit between the base of thumb & pinky
+						// movie player is fit diagonally between the base of thumb & pinky
 						const x = Math.min(thumb_x, pinky_x);
 						const y = Math.min(thumb_y, pinky_y);
 						const w = Math.abs(thumb_x - pinky_x);
