@@ -13,7 +13,7 @@
 		<video width=640 height=480 autoplay muted id="camera">
 		</video>
 
-		<canvas width=640 height=480 id="augmented_world"> </canvas>
+		<canvas width=640 height=480 id="augmented_canvas"> </canvas>
 
 		<video autoplay muted loop id="movie" style="visibility: hidden">
 			<source src="frozen.mp4" type="video/mp4"> </source>
@@ -21,9 +21,8 @@
 
 		<script>
 
-			// tracks position of the hand in live camera stream
-			// and plays video as per hand gestures
-			async function capture_hand()
+			// hand tracking to move objects in Augmented world
+			async function track_hand()
 			{
 				// load camera stream
 				const frame = document.getElementById("camera");
@@ -33,53 +32,42 @@
 				movie.play();
 
 				// prepare canvas
-				const canvas = document.getElementById("augmented_world");
+				const canvas = document.getElementById("augmented_canvas");
 				const draw = canvas.getContext("2d");
 
 				// load hand-pose model
 				const model = await handpose.load();
 
-				// default media position & size
-				var x = canvas.width - 230;
-				var y = 30;
-				var w = 200;
-				var h = 150;
+				// default position & size of movie object
+				const w = 250;
+				const h = 150;
+				var index_x = canvas.width - w - 10;
+				var index_y = 10;
 
 				while(1)
 				{
-					// fill canvas with camera frame
-					draw.drawImage(frame, 0, 0, width=640, height=480);
+					// copy video frame to canvas
+					draw.drawImage(frame, 0, 0, 640, 480);
 
 					// track hand position
 					const result = await model.estimateHands(frame);
 
-					// if hand is detected, update hand position
+					// check if hand is detected
 					if(result.length > 0)
 					{
 						// get hand co-ordinates
 						const hand = result[0];
 
-						// get thumb base position
-						const thumb = hand.annotations.thumb;
+						// update index finger tip position
+						const index = hand.annotations.indexFinger;
 
-						const thumb_x = Math.round(thumb[0][0]);
-						const thumb_y = Math.round(thumb[0][1]);
+						index_x = Math.round(index[3][0]);
+						index_y = Math.round(index[3][1]);
 
-						// get pinky base position
-						const pinky = hand.annotations.pinky;
-
-						const pinky_x = Math.round(pinky[0][0]);
-						const pinky_y = Math.round(pinky[0][1]);
-
-						// update media position & size as per gestures
-						x = Math.min(thumb_x, pinky_x) - 20;
-						y = Math.min(thumb_y, pinky_y) - 20;
-						w = Math.abs(thumb_x - pinky_x) + 70;
-						h = Math.abs(thumb_y - pinky_y) + 70;
 					}
 
-					// play media at given location
-					draw.drawImage(movie, x, y, w, h);
+					// display movie object at assigned location
+					draw.drawImage(movie, index_x, index_y, w, h);
 
 					// loop to process the next frame
 					await tf.nextFrame();
@@ -107,7 +95,7 @@
 			if(video.readyState == 4)
 			{
 				console.log("video is ready for processing..");
-				capture_hand();
+				track_hand();
 			}
 			else
 			{
@@ -119,7 +107,7 @@
 		// capture live stream
 		live_webcam();
 
-		// run augmentation once the video is ready
+		// detect gestures once the video is ready
 		main();
 
 	  </script>
