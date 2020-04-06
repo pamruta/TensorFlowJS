@@ -91,4 +91,16 @@
 
 			https://github.com/tensorflow/tfjs-models/tree/master/body-pix
 
+## Gesture-Recognition.html :
+
+[![Hand-Tracking Demo](https://img.youtube.com/vi/awCD4Jpicng/0.jpg)](https://www.youtube.com/watch?v=awCD4Jpicng)
+
+			Uses Hand-Tracking to move objects in Augmented Reality
+
+			Hand Positions are tracked using Hand-Pose model in TensorFlow.JS
+
+			Link to Hand-Pose model:
+
+			https://github.com/tensorflow/tfjs-models/tree/master/handpose
+
 Tech Stack: TensorFlow.JS, JavaScript, HTML5, Mobile-Net, Knn-Classifier, Coco-SSD
