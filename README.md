@@ -95,12 +95,14 @@
 
 [![Hand-Tracking Demo](https://img.youtube.com/vi/awCD4Jpicng/0.jpg)](https://www.youtube.com/watch?v=awCD4Jpicng)
 
-			Uses Hand-Tracking to move objects in Augmented Reality
+			Using Hand-Gestures to move objects in Virtual / Augmented Worlds
 
 			Hand Positions are tracked using Hand-Pose model in TensorFlow.JS
 
 			Link to Hand-Pose model:
 
 			https://github.com/tensorflow/tfjs-models/tree/master/handpose
+
+			More gesture-controlled features to Pause, Browse, Scroll, Zoom Media Stream to be added..
 
 Tech Stack: TensorFlow.JS, JavaScript, HTML5, Mobile-Net, Knn-Classifier, Coco-SSD
