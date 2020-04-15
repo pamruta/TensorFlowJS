@@ -1,0 +1,145 @@
+
+<html>
+
+	<head>
+
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+		<script src="https://unpkg.com/tone"></script>
+
+	</head>
+
+	<body>
+		<video width=640 height=480 autoplay muted id="camera">
+		</video>
+
+		<canvas width=640 height=480 id="sound_box"> </canvas>
+		<canvas width=640 height=480 id="sound_box_copy" style="visibility:hidden"> </canvas>
+
+		<script>
+
+			// generate sounds using hand gestures
+			async function track_hand()
+			{
+				// load camera stream
+				const frame = document.getElementById("camera");
+
+				// load hand-pose model
+				const model = await handpose.load();
+
+				// create sound box
+				const canvas = document.getElementById("sound_box");
+				const draw = canvas.getContext("2d");
+				draw.globalAlpha = 0.6;
+
+				// generate random color codes for each sound box
+				const letters = "0123456789ABCDEF";
+
+				// each box is 80 x 80
+				for(var x=0; x<640; x=x+80)
+				{
+					for(var y=0; y<480; y=y+80)
+					{
+						var color_code = "#";
+						// 6-digit HTML color code
+						for(i=0; i < 6; i++)
+						{
+							var k = Math.floor(Math.random() * 16);
+							color_code += letters[k];
+						}
+						// paint cell with generated color code
+						draw.fillStyle = color_code;
+						draw.fillRect(x, y, 80, 80);
+					}
+				}
+
+				// save copy of sound box
+				const canvas2 = document.getElementById("sound_box_copy");
+				const draw2 = canvas2.getContext("2d");
+				draw2.globalAlpha = 0.6;
+				draw2.drawImage(canvas, 0, 0);
+
+				// load synthesizer
+				var synth = new Tone.Synth().toMaster();
+
+				while(1)
+				{
+					// refresh sound box
+					draw.drawImage(canvas2, 0, 0);
+
+					// track hand position
+					const result = await model.estimateHands(frame);
+
+					// check if hand is detected
+					if(result.length > 0)
+					{
+						// get hand co-ordinates
+						const hand = result[0];
+
+						// get index finger tip position
+						var index = hand.annotations.indexFinger;
+
+						var index_x = Math.round(index[3][0]);
+						var index_y = Math.round(index[3][1]);
+						console.log(index_x, index_y);
+
+						var x = Math.floor(index_x / 80);
+						var y = Math.floor(index_y / 80);
+						console.log(x, y);
+
+						// highlight corresponding box
+						draw.fillStyle = "#000000";
+						draw.fillRect(x * 80, y * 80, 80, 80);
+
+						// play synthesizer sound
+
+						// oscillator frequency is function of box position (x+y)
+						synth.triggerAttackRelease((x+y)*100, '4n');
+					}
+
+					// loop to process the next frame
+					await tf.nextFrame();
+				}
+			}
+
+		</script>
+
+		<script>
+
+		function live_webcam()
+		{
+			// capture live video stream from web camera
+			if(navigator.mediaDevices.getUserMedia)
+			{
+				navigator.mediaDevices.getUserMedia({video: true})
+					.then(function (stream) {video.srcObject = stream; });
+			}
+		}
+
+		function main()
+		{
+			// check if the video is loaded and ready for processing
+			video = document.getElementById("camera");
+			if(video.readyState == 4)
+			{
+				console.log("video is ready for processing..");
+				track_hand();
+			}
+			else
+			{
+				console.log("nope, not ready yet..");
+				setTimeout(main, 1000/30);
+			}
+		}
+
+		// capture live camera stream
+		live_webcam();
+
+		// detect gestures once the video is ready
+		main();
+
+	  </script>
+
+	</body>
+</html>
