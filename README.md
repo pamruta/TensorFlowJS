@@ -116,4 +116,8 @@
 
 			Each sound-box at (x, y) produces a sound with frequency f(x,y)
 
-Tech Stack: TensorFlow.JS, JavaScript, HTML5, Mobile-Net, Knn-Classifier, Coco-SSD
+			Link to Tone.JS library:
+
+			https://tonejs.github.io
+
+Tech Stack: TensorFlow.JS, JavaScript, HTML5, Mobile-Net, Knn-Classifier, Coco-SSD, Tone.JS
