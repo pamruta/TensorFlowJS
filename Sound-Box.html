@@ -23,7 +23,7 @@
 			async function track_hand()
 			{
 				// load camera stream
-				const frame = document.getElementById("camera");
+				const stream = document.getElementById("camera");
 
 				// load hand-pose model
 				const model = await handpose.load();
@@ -69,7 +69,7 @@
 					draw.drawImage(canvas2, 0, 0);
 
 					// track hand position
-					const result = await model.estimateHands(frame);
+					const result = await model.estimateHands(stream);
 
 					// check if hand is detected
 					if(result.length > 0)
@@ -84,6 +84,7 @@
 						var index_y = Math.round(index[3][1]);
 						console.log(index_x, index_y);
 
+						// map hand-position to sound-box position
 						var x = Math.floor(index_x / 80);
 						var y = Math.floor(index_y / 80);
 						console.log(x, y);
