@@ -59,7 +59,7 @@
 
 
 ## Activity-Recognition.html :
-[![Activity Recognition Demo](https://img.youtube.com/vi/7QB1AgsR-qc/0.jpg)](https://www.youtube.com/watch?v=7QB1AgsR-qc)
+![Activity Recognition Demo](demos/sports-activity.gif)
 
 			Builds a KNN Classifier for Sports Activity Recognition using
 			Transfer Learning on a pre-trained model Mobile-Net
