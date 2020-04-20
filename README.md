@@ -48,7 +48,7 @@
 
 ## Object-Detection.html :
 
-[![Object Detection Demo](https://img.youtube.com/vi/MrTGiH3UEoQ/0.jpg)](https://www.youtube.com/watch?v=MrTGiH3UEoQ)
+![Object Detection Demo](demos/object-detection.gif)
 
 			Marks Bounding Boxes around the Objects detected in the video using
 			TensorFlow.JS COCO-SSD model..
