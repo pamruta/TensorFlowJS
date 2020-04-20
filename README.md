@@ -22,7 +22,7 @@
 
 ## Body-Segment.html   :
 
-[![Body-Segmentation Demo](https://img.youtube.com/vi/ryzB5qCP8KY/0.jpg)](https://www.youtube.com/watch?v=ryzB5qCP8KY)
+![Body-Segmentation Demo](demos/body-segment.gif)
 
 			Body Segmentation using TensorFlow.JS Body-Pix model
 
