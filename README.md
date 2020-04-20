@@ -4,7 +4,7 @@
 
 ## Facemesh-Camera.html :
 
-[![Face-Mesh Demo](https://img.youtube.com/vi/8OIEeK09DVg/0.jpg)](https://www.youtube.com/watch?v=8OIEeK09DVg)
+![Face-Mesh Demo](https://github.com/pamruta/TensorFlowJS/tree/master/demos/facemesh.gif)
 
 			Real-time Face Tracking using TensorFlow.js
 
