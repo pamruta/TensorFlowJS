@@ -80,7 +80,7 @@
 
 ## Green-Screen.html :
 
-[![Chroma-Key Demo](https://img.youtube.com/vi/ZUDdECVFBOE/0.jpg)](https://www.youtube.com/watch?v=ZUDdECVFBOE)
+![Chroma-Key Demo](demos/chroma-key.gif)
 
 			Extracts person from an input video stream using Body-Pix model in
 			TensorFlow.JS and replaces the video backdrop
