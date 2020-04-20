@@ -107,7 +107,7 @@
 
 ## Sound-Box.html :
 
-[![Sound-Box Demo](https://img.youtube.com/vi/REbq8Fq0BIw/0.jpg)](https://www.youtube.com/watch?v=REbq8Fq0BIw)
+![Sound-Box Demo](demos/music-gestures.gif)
 
 			Music Generation using Hand-Gestures
 
