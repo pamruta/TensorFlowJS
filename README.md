@@ -91,9 +91,9 @@
 
 			https://github.com/tensorflow/tfjs-models/tree/master/body-pix
 
-## Gesture-Recognition.html :
+## Hand-Tracking.html :
 
-[![Hand-Tracking Demo](https://img.youtube.com/vi/CTGRbU9-P6U/0.jpg)](https://www.youtube.com/watch?v=CTGRbU9-P6U)
+![Hand-Tracking Demo](demos/augmented-gesture.gif)
 
 			Using Hand-Gestures to move objects in Virtual / Augmented Worlds
 
