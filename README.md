@@ -35,7 +35,7 @@
 
 ## Video-Tagging.html  :
 
-[![Video-Tagging Demo](https://img.youtube.com/vi/2U7XreZlw_U/0.jpg)](https://www.youtube.com/watch?v=2U7XreZlw_U)
+![Video-Tagging Demo](demos/wild-life.gif)
 
 			Identifies animal species in Wild-Life documentary films using
 			Mobile-Net Image Classification model in TensorFlow.JS
