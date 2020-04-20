@@ -7,61 +7,57 @@
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script>
 
-	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
-        <script>
-		/* to use web-assembly as backend, set backend to 'wasm' */
-                tf.setBackend('webgl').then(console.log('Backend set to', tf.getBackend()));
-        </script>
-
 	<script>
 
+	/* running facemesh code */
 	async function get_facemesh()
 	{
-		var canvas = document.getElementById("facemesh");
 
-		/* get video stream */
+		// load HTML canvas
+		var canvas = document.getElementById("facemesh");
+		var draw = canvas.getContext("2d");
+
+		// get video stream
 		const stream = document.getElementById("movie");
 
-		/* running facemesh code */
+		// load facemesh model
 		const model = await facemesh.load(maxFaces=1);
-		const faces = await model.estimateFaces(stream);
 
-		if(faces.length != 0)
+		// process input stream frame by frame
+		while(1)
 		{
-			/* loop through faces array to capture multiple faces */
-			var mesh = faces[0].scaledMesh;
 
-			console.log(mesh);
-
-			var draw = canvas.getContext("2d");
-
-			/* fill canvas with black background */
+			// fill canvas with black background
 			draw.fillStyle = "black";
 			draw.fillRect(0, 0, canvas.width, canvas.height);
 
-			/* highlight facial landmark points on canvas board */
-			draw.fillStyle = "#00FF00";
+			// detect faces
+			const faces = await model.estimateFaces(stream);
 
-			for(i=0; i< mesh.length; i++)
+			if(faces.length != 0)
 			{
-				var [x, y, z] = mesh[i];
+				// loop through faces array to capture multiple faces
+				var mesh = faces[0].scaledMesh;
 
-				/* scale co-ordinates to fit in canvas */
-				/* not required if canvas and input video stream are of same size */
+				console.log(mesh);
 
-				x = (x * canvas.width) / 640;
-				y = (y * canvas.height) / 480;
+				/* highlight facial landmark points on canvas board */
+				draw.fillStyle = "#00FF00";
 
-				draw.fillRect(Math.round(x), Math.round(y), 2, 2);
+				for(i=0; i< mesh.length; i++)
+				{
+					var [x, y, z] = mesh[i];
+					draw.fillRect(Math.round(x), Math.round(y), 2, 2);
+				}
 			}
-		}
-		else
-		{
-			console.log(`no faces detected..`);
-		}
+			else
+			{
+				console.log(`no faces detected..`);
+			}
 
-		// loop to process the next frame
-		setTimeout(get_facemesh, 1000/30);
+			// loop to process the next frame
+			await tf.nextFrame();
+		}
 	}
 	</script>
 </head>
