@@ -11,28 +11,28 @@
 			<source src="horse-riding.mp4" type="video/mp4" />
 		</video>
 
-		<canvas width=640 height=480 id="frame">
+		<canvas width=640 height=480 id="canvas_objects">
 
 		<script>
 
-			// preparing the canvas object for drawing
-			const canvas = document.getElementById("frame");
-			var draw = canvas.getContext("2d");
-			draw.font = "20px Arial";
-			draw.lineWidth = 3;
-
-			// process video 
+			// process video
 			async function object_detection()
 			{
+
+				// load video stream
+				const stream = document.getElementById("movie");
+
+				// preparing HTML canvas
+				const canvas = document.getElementById("canvas_objects");
+				var draw = canvas.getContext("2d");
+				draw.font = "20px Arial";
+				draw.lineWidth = 3;
 
 				// load the coco-ssd model
 				const model = await cocoSsd.load();
 
 				while(1)
 				{
-
-					// get video stream
-					const stream = document.getElementById("movie");
 
 					// fill canvas object with video stream
 					draw.drawImage(stream, 0, 0, canvas.width, canvas.height);
@@ -130,7 +130,9 @@
 				}
 			}
 
+			// run object detection once the video is ready for processing
 			main();
+
 		</script>
 	</body>
 </html>
