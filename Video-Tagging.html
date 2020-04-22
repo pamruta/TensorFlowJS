@@ -11,28 +11,28 @@
 			<source src="wild-life.mp4" type="video/mp4" />
 		</video>
 
-		<canvas width=640 height=480 id="frame">
+		<canvas width=640 height=480 id="output">
 
 		<script>
 
-			const canvas = document.getElementById("frame");
-			var draw = canvas.getContext("2d");
-			draw.font = "20px Arial";
-			draw.fillStyle = "yellow";
-
-
-			// process video 
+			// process video
 			async function video_tagging()
 			{
+
+				// get video stream
+				const stream = document.getElementById("movie");
+
+				// load and prepare HTML canvas
+				const canvas = document.getElementById("output");
+				var draw = canvas.getContext("2d");
+				draw.font = "20px Arial";
+				draw.fillStyle = "yellow";
 
 				// load the mobile-net model
 				const model = await mobilenet.load();
 
 				while(1)
 				{
-
-					// get video stream
-					const stream = document.getElementById("movie");
 
 					// fill canvas object with video stream
 					draw.drawImage(stream, 0, 0, canvas.width, canvas.height);
