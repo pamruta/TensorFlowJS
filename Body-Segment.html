@@ -15,6 +15,7 @@
 
 		<script>
 
+			// function to process input video feed and create segmentation
 			async function body_segment()
 			{
 				const frame = document.getElementById("camera");
@@ -22,7 +23,7 @@
 				// load HTML canvas
 				const canvas = document.getElementById("body_pix");
 				const draw = canvas.getContext("2d");
-				draw.globalAlpha = 0.7;
+				draw.globalAlpha = 0.3;
 
 				// color codes for segments
 				const Color_Codes = ["#663399", "#663399", "#BA55D3", "#BA55D3", "#BA55D3", "#BA55D3", "#BA55D3", "#BA55D3", "#BA55D3", "#BA55D3", "#DA70D6", "#DA70D6", "#4682B4", "#4682B4", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008080", "#008000", "#008000"];
@@ -32,7 +33,6 @@
 
 				while(1)
 				{
-
 					// draw frame on canvas
 					draw.drawImage(frame, 0, 0, 640, 480);
 
@@ -54,7 +54,7 @@
 							}
 							else
 							{
-								// set background to black
+								// fill background with black color
 								color_code = "#000000";
 							}
 							draw.fillStyle = color_code;
@@ -70,19 +70,21 @@
 		</script>
 
 		<script>
-		function live_webcam()
+
+		video = document.getElementById("camera");
+		// capture live video stream from web camera
+		if(navigator.mediaDevices.getUserMedia)
 		{
-			// capture live video stream from web camera
-			if(navigator.mediaDevices.getUserMedia)
-			{
 				navigator.mediaDevices.getUserMedia({video: true})
 					.then(function (stream) {video.srcObject = stream; });
-			}
 		}
+
+		// run segmentation once the video is ready for processing
+		main();
+
 		function main()
 		{
 			// check if the video is loaded and ready for processing
-			video = document.getElementById("camera");
 			if(video.readyState == 4)
 			{
 				console.log("video is ready for processing..");
@@ -94,11 +96,6 @@
 				setTimeout(main, 1000/30);
 			}
 		}
-
-		// capture live stream and run segmentation once the video is ready for processing
-
-		live_webcam();
-		main();
 
     </script>
 
