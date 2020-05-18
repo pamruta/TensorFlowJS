@@ -28,6 +28,9 @@
 				// load hand-pose model
 				const model = await handpose.load();
 
+				// load synthesizer
+				var synth = new Tone.Synth().toMaster();
+
 				// create sound box
 				const canvas = document.getElementById("sound_box");
 				const draw = canvas.getContext("2d");
@@ -59,9 +62,6 @@
 				const draw2 = canvas2.getContext("2d");
 				draw2.globalAlpha = 0.6;
 				draw2.drawImage(canvas, 0, 0);
-
-				// load synthesizer
-				var synth = new Tone.Synth().toMaster();
 
 				while(1)
 				{
@@ -98,47 +98,36 @@
 						// oscillator frequency is function of box position (x+y)
 						synth.triggerAttackRelease((x+y)*100, '4n');
 					}
-
 					// loop to process the next frame
 					await tf.nextFrame();
 				}
 			}
 
-		</script>
-
-		<script>
-
-		function live_webcam()
-		{
 			// capture live video stream from web camera
+			video = document.getElementById("camera");
 			if(navigator.mediaDevices.getUserMedia)
 			{
 				navigator.mediaDevices.getUserMedia({video: true})
 					.then(function (stream) {video.srcObject = stream; });
 			}
-		}
 
-		function main()
-		{
-			// check if the video is loaded and ready for processing
-			video = document.getElementById("camera");
-			if(video.readyState == 4)
+			// detect gestures once the video is ready
+			main();
+
+			function main()
 			{
-				console.log("video is ready for processing..");
-				track_hand();
+				// check if the video is loaded and ready for processing
+				if(video.readyState == 4)
+				{
+					console.log("video is ready for processing..");
+					track_hand();
+				}
+				else
+				{
+					console.log("nope, not ready yet..");
+					setTimeout(main, 1000/30);
+				}
 			}
-			else
-			{
-				console.log("nope, not ready yet..");
-				setTimeout(main, 1000/30);
-			}
-		}
-
-		// capture live camera stream
-		live_webcam();
-
-		// detect gestures once the video is ready
-		main();
 
 	  </script>
 
