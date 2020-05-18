@@ -17,17 +17,18 @@
 
 		<script>
 
-			// function to replace the background of video stream
+			// function to replace the background from video stream
 			async function green_screen_effect()
 			{
-
 				// get video stream
 				const frame = document.getElementById("camera");
 
-				// load html canvas and background image
+				// load html canvas
 				const canvas = document.getElementById("green_screen");
 				const draw = canvas.getContext("2d");
-				backdrop = document.getElementById("backdrop");
+
+				// load background image
+				const backdrop = document.getElementById("backdrop");
 
 				// loading body segmentation model
 				const model = await bodyPix.load();
@@ -36,18 +37,18 @@
 				while(1)
 				{
 					// fill canvas with backdrop
-					draw.drawImage(backdrop, 0, 0, width=640, height=480);
+					draw.drawImage(backdrop, 0, 0, canvas.width, canvas.height);
 
 					// segment video frame to extract the person
 					const result = await model.segmentPersonParts(frame);
 					const pixels = result.data;
 
 					// put extracted person into canvas
-					for(x=0; x < canvas.width; x++)
+					for(x=0; x < video.width; x++)
 					{
-						for(y=0; y < canvas.height; y++)
+						for(y=0; y < video.height; y++)
 						{
-							const xy = x * canvas.width + y;
+							const xy = x * video.width + y;
 
 							if(pixels[xy] != -1)
 							{
@@ -60,39 +61,31 @@
 				}
 			}
 
-		</script>
-
-		<script>
-		function live_webcam()
-		{
 			// capture live video stream from web camera
+			video = document.getElementById("camera");
 			if(navigator.mediaDevices.getUserMedia)
 			{
-				navigator.mediaDevices.getUserMedia({video: true})
-					.then(function (stream) {video.srcObject = stream; });
+					navigator.mediaDevices.getUserMedia({video: true})
+						.then(function (stream) {video.srcObject = stream; });
 			}
-		}
-		function main()
-		{
-			// check if the video is ready for processing
-			video = document.getElementById("camera");
-			if(video.readyState == 4)
-			{
-				console.log("video is ready for processing..");
-				green_screen_effect();
-			}
-			else
-			{
-				console.log("nope, not ready yet..");
-				setTimeout(main, 1000/30);
-			}
-		}
 
-		// capture live stream
-		live_webcam();
+			// run green screen effect once the video is loaded
+			main();
 
-		// run green screen effect once the video is loaded
-		main();
+			function main()
+			{
+				// check if the video is ready for processing
+				if(video.readyState == 4)
+				{
+					console.log("video is ready for processing..");
+					green_screen_effect();
+				}
+				else
+				{
+					console.log("nope, not ready yet..");
+					setTimeout(main, 1000/30);
+				}
+			}
 
 		</script>
 
