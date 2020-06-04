@@ -78,14 +78,14 @@
 
 			3. Run predictions using the knn-classifier
 
-## Green-Screen.html :
+## Chroma-Key.html :
 
 ![Chroma-Key Demo](demos/chroma-key.gif)
 
 			Extracts person from an input video stream using Body-Pix model in
 			TensorFlow.JS and replaces the video backdrop
 
-			Sample background images are provided in this directory 'backdrop-k.jpg'.
+			Sample background images are provided in 'backdrops' directory 
 
 			Link to TensorFlow.JS Body-Pix model:
 
