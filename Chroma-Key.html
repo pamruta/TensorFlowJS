@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <!-- p5 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+    <!-- ml5 -->
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+  </head>
+
+  <body>
+    <script>
+      let model;
+      let video;
+      let backdrop;
+      // setting height and width for input and output video
+      const w = 640;
+      const h = 480;
+
+      // options for body-pix model
+      const options = {
+          outputStride: 8, // 8, 16, or 32, default is 16
+          segmentationThreshold: 0.6 // 0 - 1, defaults to 0.5
+      }
+
+      // load model before running the rest of the code
+      function preload()
+      {
+        model = ml5.bodyPix(options);
+      }
+
+      // this function is run once during initial setup
+      function setup()
+      {
+          createCanvas(w, h);
+          backdrop = loadImage("backdrop-1.jpg");
+          // load webcam
+          video = createCapture(VIDEO);
+          video.size(w, h);
+          video.hide(); // Hide the video stream, and just show the canvas
+          model.segment(video, gotResults);
+      }
+
+      // process results of segmentation
+      function gotResults(error, result)
+      {
+          if (error)
+          {
+              console.log(error);
+              return;
+          }
+          background(backdrop);
+          image(result.backgroundMask, 0, 0, w, h);
+          // process next frame
+          model.segment(video, gotResults);
+      }
+    </script>
+  </body>
+</html>
