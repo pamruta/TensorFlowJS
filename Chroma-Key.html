@@ -9,9 +9,12 @@
   </head>
 
   <body>
-    <button style="background: url(assets/button-1.jpeg); height:100px; width:100px; border-radius:50%" id="bg1" onclick="change_background('backdrops/bg-1.jpeg')"></button>
-    <button style="background: url(assets/button-2.jpeg); height:100px; width:100px; border-radius:50%" id="bg2" onclick="change_background('backdrops/bg-2.jpeg')"></button>
-    <button style="background: url(assets/button-3.jpeg); height:100px; width:100px; border-radius:50%" id="bg3" onclick="change_background('backdrops/bg-3.jpeg')"></button>
+    <button style="background: url(assets/button-1.jpg); height:100px; width:100px; border-radius:50%" id="bg1" onclick="change_background('backdrops/bg-1.jpg')"></button>
+    <button style="background: url(assets/button-2.jpg); height:100px; width:100px; border-radius:50%" id="bg2" onclick="change_background('backdrops/bg-2.jpg')"></button>
+    <button style="background: url(assets/button-3.jpg); height:100px; width:100px; border-radius:50%" id="bg3" onclick="change_background('backdrops/bg-3.jpg')"></button>
+    <button style="background: url(assets/button-4.jpg); height:100px; width:100px; border-radius:50%" id="bg1" onclick="change_background('backdrops/bg-4.jpg')"></button>
+    <button style="background: url(assets/button-5.jpg); height:100px; width:100px; border-radius:50%" id="bg2" onclick="change_background('backdrops/bg-5.jpg')"></button>
+    <button style="background: url(assets/button-6.jpg); height:100px; width:100px; border-radius:50%" id="bg3" onclick="change_background('backdrops/bg-6.jpg')"></button>
 
     <br><br>
     <script>
@@ -26,7 +29,7 @@
       // options for body-pix model
       const options = {
           outputStride: 16, // 8, 16, or 32, default is 16
-          segmentationThreshold: 0.8 // 0 - 1, defaults to 0.5
+          segmentationThreshold: 0.7 // 0 - 1, defaults to 0.5
       }
 
       // load model before running the rest of the code
@@ -39,7 +42,7 @@
       function setup()
       {
           createCanvas(w, h);
-          backdrop = loadImage("backdrops/bg-1.jpeg");
+          backdrop = loadImage("backdrops/bg-1.jpg");
           // load webcam
           video = createCapture(VIDEO);
           video.size(w, h);
