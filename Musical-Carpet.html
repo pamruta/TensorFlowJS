@@ -1,0 +1,131 @@
+
+<html>
+
+	<head>
+
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+		<script src="https://unpkg.com/tone"></script>
+
+	</head>
+
+	<body>
+		<video width=640 height=480 autoplay muted id="camera">
+		</video>
+
+		<canvas width=640 height=480 id="music_carpet"> </canvas>
+		<canvas width=640 height=480 id="music_carpet_copy" style="visibility:hidden"> </canvas>
+
+		<script>
+
+			// generate sounds using hand gestures
+			async function track_feet()
+			{
+				// load camera stream
+				const stream = document.getElementById("camera");
+
+				// load pose-net model
+				const model = await posenet.load();
+
+				// load synthesizer
+				var synth = new Tone.PolySynth().toMaster();
+
+				// create sound box
+				const canvas = document.getElementById("music_carpet");
+				const draw = canvas.getContext("2d");
+				draw.globalAlpha = 0.6;
+
+				// generate random color codes for each sound box
+				const letters = "0123456789ABCDEF";
+
+				// each box is 80 x 80
+				for(var x=0; x<640; x=x+80)
+				{
+					for(var y=240; y<480; y=y+80)
+					{
+						var color_code = "#";
+						// 6-digit HTML color code
+						for(i=0; i < 6; i++)
+						{
+							var k = Math.floor(Math.random() * 16);
+							color_code += letters[k];
+						}
+						// paint cell with generated color code
+						draw.fillStyle = color_code;
+						draw.fillRect(x, y, 80, 80);
+					}
+				}
+
+				// fill half canvas with black
+				draw.fillStyle = "#000000";
+				draw.fillRect(0, 0, 640, 240);
+
+				// save copy of music carpet
+				const canvas_copy = document.getElementById("music_carpet_copy");
+				const draw_copy = canvas_copy.getContext("2d");
+				draw_copy.globalAlpha = 0.6;
+				draw_copy.drawImage(canvas, 0, 0);
+
+				while(1)
+				{
+					// refresh canvas
+					draw.drawImage(canvas_copy, 0, 0);
+
+					// track feet position
+					const result = await model.estimateSinglePose(stream);
+
+					var poly_phony = [];
+					// get the position of left and right ankles
+					for(i=0; i < result.keypoints.length; i++)
+					{
+							const body_part = result.keypoints[i];
+							if(body_part.part == "leftKnee" || body_part.part == "rightKnee")
+							{
+								const x = Math.floor( Math.round(body_part.position.x) / 80 );
+								const y = Math.floor( Math.round(body_part.position.y) / 80 );
+								poly_phony.push((x+y) * 10);
+
+								// highlight corresponding grid cell
+								draw.fillStyle = "#000000";
+								draw.fillRect(x*80, y*80, 80, 80);
+							}
+					}
+
+					// play notes
+					synth.triggerAttackRelease(poly_phony, '2n');
+
+					// loop to process the next frame
+					await tf.nextFrame();
+				}
+			}
+
+			// capture live video stream from web camera
+			video = document.getElementById("camera");
+			if(navigator.mediaDevices.getUserMedia)
+			{
+				navigator.mediaDevices.getUserMedia({video: true})
+					.then(function (stream) {video.srcObject = stream; });
+			}
+
+			// detect gestures once the video is ready
+			main();
+
+			function main()
+			{
+				// check if the video is loaded and ready for processing
+				if(video.readyState == 4)
+				{
+					console.log("video is ready for processing..");
+					track_feet();
+				}
+				else
+				{
+					console.log("nope, not ready yet..");
+					setTimeout(main, 1000/30);
+				}
+			}
+
+	  </script>
+
+	</body>
+</html>
