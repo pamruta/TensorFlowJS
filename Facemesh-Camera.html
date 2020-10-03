@@ -8,7 +8,13 @@
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script>
 
 	<script>
-
+	async function delay(delayInms) {
+	return new Promise(resolve  => {
+	setTimeout(() => {
+	  resolve(2);
+	}, delayInms);
+	});
+	}
 	/* running facemesh code */
 	async function get_facemesh()
 	{
@@ -55,6 +61,7 @@
 			}
 
 			// loop to process the next frame
+			let delayres = await delay(50);
 			await tf.nextFrame();
 		}
 	}
